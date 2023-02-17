@@ -1,5 +1,5 @@
-import { states } from "../states/states.mjs";
-import { clear, print, printNewLine, prompt } from "../ui/console.mjs";
+import { states } from "../states/states.js";
+import { clear, print, printNewLine, prompt } from "../ui/console.js";
 
 export async function showMenu() {
 	clear();
