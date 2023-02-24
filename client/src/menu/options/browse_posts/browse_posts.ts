@@ -1,12 +1,18 @@
 import { fetchPost } from "../../../api/fetch_post";
 import { clear, print, prompt, printNewLine } from "../../../ui/console";
+import { Post } from "../../../api/types";
 
-export async function browsePosts() {
+export async function browsePosts(): Promise<Post | null> {
 	clear("nope");
 
-	const desiredPostId = await prompt("Enter Post ID");
+	const desiredPostIdString = await prompt("Enter Post ID");
 
-	// TODO: should we validate this?!
+	const desiredPostId = parseInt(desiredPostIdString);
+
+	if (isNaN(desiredPostId)) {
+		print("Invalid Post ID. Please enter a valid number.");
+		return null;
+	}
 
 	print(`📨 Fetching post "${desiredPostId}...`);
 
@@ -19,5 +25,5 @@ export async function browsePosts() {
 	printNewLine();
 	await prompt("⌨️ Press [ENTER] to return to the main menu! 🕶️");
 
-	return result;
+	return result || null;
 }

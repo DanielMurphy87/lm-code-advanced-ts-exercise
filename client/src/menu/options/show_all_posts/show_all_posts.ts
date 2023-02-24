@@ -1,7 +1,8 @@
 import { fetchAllPosts } from "../../../api/fetch_all_posts";
 import { clear, print, prompt, printNewLine } from "../../../ui/console";
+import { Post } from "../../../api/types";
 
-export async function showAllPosts() {
+export async function showAllPosts(): Promise<Post[]> {
 	clear("yes");
 
 	printNewLine();

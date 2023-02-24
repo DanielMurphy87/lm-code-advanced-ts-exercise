@@ -9,7 +9,7 @@ import { states } from "./states/states";
 import { clear, print, printNewLine, prompt } from "./ui/console";
 
 async function begin() {
-	clear(true);
+	clear("yes");
 	print("👋 Welcome to our cool blog browser!");
 	await prompt("⌨️ Press [ENTER] to continue! 🕶️");
 	main();
@@ -29,34 +29,34 @@ async function main() {
 				state.set(nextState);
 				break;
 			case "SHOW_POSTS":
-				clear();
+				clear("yes");
 				const posts = await showAllPosts();
 				state.set(states.MENU);
 				break;
 			case "SHOW_USERS":
-				clear();
+				clear("yes");
 				const users = await showAllUsers();
 				state.set(states.MENU);
 				break;
 			case "BROWSE_POSTS":
-				clear();
+				clear("yes");
 				const post = await browsePosts();
 				state.set(states.MENU);
 				break;
 			case "ADD_USER":
-				clear();
+				clear("yes");
 				print("🏗️  This functionality has not been implemented!");
 				await prompt("⌨️ Press [ENTER] to return to the main menu! 🕶️");
 				state.set(states.MENU);
 				break;
 			case "UNKNOWN":
-				clear();
+				clear("yes");
 				print("😵 We have entered an unknown state.");
 				await prompt("⌨️ Press [ENTER] to return to the main menu! 🕶️");
 				state.set(states.MENU);
 				break;
 			case "CABBAGE":
-				clear();
+				clear("yes");
 				print("🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬", false);
 				print("🥬      CABBAGE MODE UNLOCKED     🥬", false);
 				print("🥬     Why did you want this?     🥬", false);
@@ -65,7 +65,7 @@ async function main() {
 				state.set(states.MENU);
 				break;
 			default:
-				clear();
+				clear("yes");
 				print(`🌋 😱 Uh-oh, we've entered an invalid state: "${state.get()}"`);
 				print("💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥", false);
 				print("💥 Crashing the program now...  💥", false);

@@ -1,9 +1,11 @@
 import { sendMessageToServer } from "../../../api/send_message_to_server";
-import { states } from "../../../states/states";
+import { State } from "../../../states/state";
 import { clear, print, printNewLine, prompt } from "../../../ui/console";
 
-export async function sendMessage() {
-	clear();
+export async function sendMessage(): Promise<string> {
+	const state = new State();
+
+	clear("yes");
 
 	const message = await prompt("What message shall we send? ");
 
@@ -12,10 +14,15 @@ export async function sendMessage() {
 
 	const success = await sendMessageToServer(message);
 
-	if (success === true) print("🥳 Message received successfully!");
-	else print("😵 Message NOT received.");
+	if (success === true) {
+		print("🥳 Message received successfully!");
+	} else {
+		print("😵 Message NOT received.");
+	}
 
 	await prompt("⌨️ Press [ENTER] to return to the main menu! 🕶️");
 
-	return states.MENU;
+	state.set("MENU");
+
+	return state.get();
 }
