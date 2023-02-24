@@ -7,7 +7,7 @@ export class State {
 		return this.#state;
 	}
 
-	set(newState) {
+	set(newState: string) {
 		this.#state = newState;
 	}
 }

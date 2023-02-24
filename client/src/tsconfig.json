@@ -5,7 +5,8 @@
 		"moduleResolution": "Node",
 		"noImplicitAny": true,
 		"sourceMap": true,
-		"allowSyntheticDefaultImports": true
+		"allowSyntheticDefaultImports": true,
+		"target": "ES2022"
 	},
 	"include": ["./**/*"],
 	"exclude": ["node_modules", "**/*.spec.ts"],
