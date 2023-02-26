@@ -10,4 +10,4 @@ export const states = {
 	ADD_USER: "ADD_USER",
 
 	UNKNOWN: "UNKNOWN",
-};
+} as const;

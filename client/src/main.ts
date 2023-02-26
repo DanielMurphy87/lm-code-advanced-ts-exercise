@@ -4,9 +4,10 @@ import { browsePosts } from "./menu/options/browse_posts/browse_posts";
 import { sendMessage } from "./menu/options/send_message/send_message";
 import { showAllPosts } from "./menu/options/show_all_posts/show_all_posts";
 import { showAllUsers } from "./menu/options/show_all_users/show_all_users";
-import { State } from "./states/state";
+// import { State } from "./states/state";
 import { states } from "./states/states";
 import { clear, print, printNewLine, prompt } from "./ui/console";
+
 
 async function begin() {
 	clear("yes");
@@ -16,64 +17,59 @@ async function begin() {
 }
 
 async function main() {
-	let state = new State();
+	const stateHandlers = {
+		MENU: async () => {
+			await showMenu();
+			return states.MENU;
+		},
+		SEND_MESSAGE: async () => {
+			await sendMessage();
+			return states.MENU;
+		},
+		SHOW_POSTS: async () => {
+			clear("yes");
+			await showAllPosts();
+			return states.MENU;
+		},
+		SHOW_USERS: async () => {
+			clear("yes");
+			await showAllUsers();
+			return states.MENU;
+		},
+		BROWSE_POSTS: async () => {
+			clear("yes");
+			await browsePosts();
+			return states.MENU;
+		},
+		ADD_USER: async () => {
+			clear("yes");
+			print("🏗️  This functionality has not been implemented!");
+			await prompt("⌨️ Press [ENTER] to return to the main menu! 🕶️");
+			return states.MENU;
+		},
+		UNKNOWN: async () => {
+			clear("yes");
+			print("😵 We have entered an unknown state.");
+			await prompt("⌨️ Press [ENTER] to return to the main menu! 🕶️");
+			return states.MENU;
+		},
+	};
+
+	let currentState = states.MENU;
 
 	while (true) {
-		switch (state.get()) {
-			case "MENU":
-				const newMenuOption = await showMenu();
-				state.set(newMenuOption);
-				break;
-			case "SEND_MESSAGE":
-				const nextState = await sendMessage();
-				state.set(nextState);
-				break;
-			case "SHOW_POSTS":
-				clear("yes");
-				const posts = await showAllPosts();
-				state.set(states.MENU);
-				break;
-			case "SHOW_USERS":
-				clear("yes");
-				const users = await showAllUsers();
-				state.set(states.MENU);
-				break;
-			case "BROWSE_POSTS":
-				clear("yes");
-				const post = await browsePosts();
-				state.set(states.MENU);
-				break;
-			case "ADD_USER":
-				clear("yes");
-				print("🏗️  This functionality has not been implemented!");
-				await prompt("⌨️ Press [ENTER] to return to the main menu! 🕶️");
-				state.set(states.MENU);
-				break;
-			case "UNKNOWN":
-				clear("yes");
-				print("😵 We have entered an unknown state.");
-				await prompt("⌨️ Press [ENTER] to return to the main menu! 🕶️");
-				state.set(states.MENU);
-				break;
-			case "CABBAGE":
-				clear("yes");
-				print("🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬", false);
-				print("🥬      CABBAGE MODE UNLOCKED     🥬", false);
-				print("🥬     Why did you want this?     🥬", false);
-				print("🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬🥬", false);
-				await prompt("⌨️ Press [ENTER] to return to the main menu! 🕶️");
-				state.set(states.MENU);
-				break;
-			default:
-				clear("yes");
-				print(`🌋 😱 Uh-oh, we've entered an invalid state: "${state.get()}"`);
-				print("💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥", false);
-				print("💥 Crashing the program now...  💥", false);
-				print("💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥", false);
-				printNewLine();
-				exit(99);
-				break;
+		const stateHandler = stateHandlers[currentState];
+		if (!stateHandler) {
+			clear("yes");
+			print(`🌋 😱 Uh-oh, we've entered an invalid state: "${currentState}"`);
+			print("💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥", false);
+			print("💥 Crashing the program now...  💥", false);
+			print("💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥💥", false);
+			printNewLine();
+			exit(99);
+			break;
 		}
+		currentState = await stateHandler();
 	}
 }
 
